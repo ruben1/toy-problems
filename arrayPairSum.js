@@ -15,7 +15,7 @@ var arrayPairSum = function(sum, array) {
   //recursive function that takes the current index
   var recursive = function(index) {
     //start loop at element of current index and end it at lenght - 2
-    for(var i=index; i < array.length; i++) {
+    for(var i=index + 1; i < array.length; i++) {
       //sum that element plus next
       combinationSum = array[index] + array[i];
       //if result of sum equals sum passed 
