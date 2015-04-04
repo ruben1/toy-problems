@@ -34,80 +34,48 @@ var operate = {
   '/': function(x, y) {return x / y}
 };
 
+var isOperator = function(character) {
+  if(!operate[character]) {return false}
+  return true;
+}
 /*
 Implementation for expressions like  2 3 * 4 2 / + 5 3 * 6 + -
 */
 
 var postfix = function(expression) { 
   var stack = new Stack();
+  var previousCharIsInt = false;
 
   for(var i = 0; i < expression.length; i++) {
     var character = expression[i];
     var parsedChar = parseFloat(character);
-    if(character === ' ') {continue}
+    if(character === ' ') {
+      previousCharIsInt = false;
+      continue;
+    }
  
     if(!isNaN(parsedChar)) {
-      stack.push(parsedChar) ;
-    } else if(character === '+' || character === '-' || character === '*' || character === '/') {
+      if(previousCharIsInt) {
+        var previousInt = stack.pop();
+        character = previousInt.toString() + character;
+        parsedChar = parseFloat(character);
+      }
+      console.log('parsedChar', parsedChar);
+      stack.push(parsedChar);
+      previousCharIsInt = true;
+    } else if(isOperator(character)) {
       var number1 = stack.pop();
       var number2 = stack.pop();
       var calculation = operate[character](number2, number1);
       stack.push(calculation);
+      previousCharIsInt = false;
     }
   }
 
-  if(stack.size() !== 1) {throw 'There is no just 1 element in the stack'}
+  if(stack.size() !== 1) {throw 'There is not just 1 element in the stack'}
 
   return stack.pop();
 };
-/*
-
-Implementation for inputs with parenthesis (2*4-6/3)*(3*5+8/4))-(2+3)
-
-*/
-
-
-var infix = function(expression) {
-  var stack = new Stack();
-  var string = '';
-
-  for(var i = 0; i < expression.length; i++) {
-    var character = expression[i];
-
-    if(typeof character === 'number') {
-      string += character + '\n';
-    } else if(character === '+' || '-' || '*' || '/') {
-
-    }
-  }
-};
-
-
-/*
-
-Implementation for inputs without parenthesis, 2 * 3 - 48/4 -4 * 5
-
-*/
-
-var infix2 = function(expression) {
-  var numberStack = new Stack();
-  var operatorStack = new Stack();
-
-  for(var i = expression.length - 1; i >= 0; i--) {
-    var character = expression[i];
-
-    if(typeof character === 'number') {
-      numberStack.push(character);
-    } else if(character === '+' || '-' || '*' || '/') {
-      if(operatorStack.size === 0 || ) {
-
-      } else {
-      	operatorStack.push(character);
-      }
-    } 
-  }
-};
-
 
 
 
