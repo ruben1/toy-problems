@@ -60,7 +60,6 @@ var postfix = function(expression) {
         character = previousInt.toString() + character;
         parsedChar = parseFloat(character);
       }
-      console.log('parsedChar', parsedChar);
       stack.push(parsedChar);
       previousCharIsInt = true;
     } else if(isOperator(character)) {
